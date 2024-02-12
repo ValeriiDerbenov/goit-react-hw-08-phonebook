@@ -1,9 +1,9 @@
 
-// export default function LoginPage() {
+export default function LoginPage() {
 
-// 	return(
-// 		<div>
-// 		<h2>Login Page</h2>
-// 		</div>
-// 	);
-// }
+	return(
+		<div>
+		<h2>Login Page</h2>
+		</div>
+	);
+}
