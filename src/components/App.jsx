@@ -1,11 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import ContactForm from './ContactForm/ContactForm';
-import ContactList from './ContactList/ContactList';
-import Filter from './Filter/Filter';
-import Section from './Section/Section';
-import Title from './Title/Title';
-import { selectContacts, selectError, selectIsLoading } from '../../src/redux/contacts/contacts.selector';
+import { useDispatch } from 'react-redux';
+
 
 import Loader from './Loader/Loader';
 import {fetchContacts} from '../../src/redux/contacts/contacts.reducer'
