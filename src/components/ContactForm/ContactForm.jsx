@@ -9,12 +9,11 @@ import { Notify } from 'notiflix';
 const ContactForm = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  // const [number, setNumber] = useState('');
   const contacts = useSelector(state => state.contactsStore.contacts);
   const dispatch = useDispatch();
 
   const handleFormContact = (name, phone) => {
-    if (contacts.find(contact => contact.name === name)) {
+    if (contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())) {
       Notify.warning('This contact is already in the phonebook');
       return;
     }
@@ -41,9 +40,6 @@ const ContactForm = () => {
   const handleInputChange = event => {
     const value = event.target.value;
     const name = event.target.name;
-    // console.log('event.target :>> ', event.target);
-    // console.log('value :>> ', value);
-    // console.log('name :>> ', name);
 
     switch (name) {
       case 'name': {

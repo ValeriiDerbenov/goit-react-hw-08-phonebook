@@ -1,7 +1,5 @@
 import React, { useEffect, Suspense } from 'react';
 import { useDispatch } from 'react-redux';
-
-
 import Loader from './Loader/Loader';
 import {fetchContacts} from '../../src/redux/contacts/contacts.reducer'
 import Header from './Header/Header';
