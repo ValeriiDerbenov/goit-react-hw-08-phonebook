@@ -1,5 +1,4 @@
-import { useState, useMemo, useId } from "react";
-import { nanoid } from "nanoid";
+import { useState, useId } from "react";
 
 import styles from "./register-form.module.css";
 
@@ -39,7 +38,7 @@ const RegisterForm = ({ onSubmit }) => {
     const { name, email, password } = state;
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.block}>
                 <label htmlFor={nameId}>Name:</label>
                 <input value={name} onChange={handleChange} name="name" id={nameId} required />
