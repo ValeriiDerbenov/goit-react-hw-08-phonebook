@@ -5,6 +5,7 @@ export const Home = () => {
   return (
     <div className={css.home__section}>
       <h2>Phonebook welcome page</h2>
+      
     </div>
   );
 };
