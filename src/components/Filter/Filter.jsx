@@ -1,28 +1,23 @@
-import React from 'react';
-import css from './Filter.module.css';
-import { useDispatch } from 'react-redux';
-import { filters } from '../../redux/filter/filter.reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectFilter, setFilter } from '../../redux';
+import css from 'components/Filter/Filter.module.css';
 
-const Filter = ({ value }) => {
+export const Filter = () => {
   const dispatch = useDispatch();
-  const changeFilter = event => {
-    dispatch(filters(event.target.value));
-  };
+  const filter = useSelector(selectFilter);
+
   return (
-    <form className={css.filterContainer}>
-      <label className={css.filterLabel}>
-        <p className={css.filterLabelText}>Find contacts by name: </p>
+    <div>
+      <label className={css.label}>
+        <span className={css.text}>Filter</span>
         <input
-          placeholder="Search contacts"
+          className={css.input}
           type="text"
-          className={css.filterInput}
           name="filter"
-          value={value}
-          onChange={changeFilter}
-        ></input>
+          value={filter}
+          onChange={evt => dispatch(setFilter(evt.target.value))}
+        />
       </label>
-    </form>
+    </div>
   );
 };
-
-export default Filter;

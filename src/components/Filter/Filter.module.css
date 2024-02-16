@@ -1,26 +1,27 @@
-.filterContainer {
-  padding: 20px 40px;
-  background-color: rgb(229, 218, 240);
-  border-radius: 6px;
+.input {
+  padding: 5px 10px;
+  width: calc(100% - 20px);
+  border: 1px solid rgba(0, 0, 0, 0.233);
+  height: 24px;
+  margin-bottom: 12px;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  transition: all 250ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-.filterLabel {
-  display: flex;
-  flex-direction: column;
+.input:hover {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.3),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.3), 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
+}
+.input:focus {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.3),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.3), 0px 1px 10px 0px rgba(0, 0, 0, 0.3);
 }
 
-.filterLabelText {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-  font-size: 16px;
-  margin-bottom: 4px;
+.text {
+  display: block;
+  height: 32px;
 }
-
-.filterInput {
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 6px;
-  border: 2px solid #ccc;
-  padding: 8px 16px;
+.label {
+  width: 100%;
+  display: block;
 }

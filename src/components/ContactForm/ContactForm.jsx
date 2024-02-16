@@ -1,95 +1,106 @@
-import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
-import Title from '../Title/Title';
-import css from './ContactForm.module.css';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contacts/contacts.reducer';
-import { Notify } from 'notiflix';
+import { NotificationManager } from 'react-notifications';
+import { apiGetContacts, apiPostContact, selectContacts } from '../../redux';
+import { Formik } from 'formik';
+import { Button } from 'components';
+import * as Yup from 'yup';
+import css from 'components/ContactForm/ContactForm.module.css';
 
-const ContactForm = () => {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const contacts = useSelector(state => state.contactsStore.contacts);
+function isExists(name, contacts) {
+  return contacts.some(
+    contact => contact.name.toLowerCase() === name.toLowerCase()
+  );
+}
+
+export const ContactForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
+  const inputForm = useRef();
 
-  const handleFormContact = (name, phone) => {
-    if (contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())) {
-      Notify.warning('This contact is already in the phonebook');
+  useEffect(() => {
+    dispatch(apiGetContacts());
+  }, [dispatch]);
+
+  const handleSubmit = (value, action) => {
+    if (isExists(value.name, contacts)) {
+      NotificationManager.info(`${value.name} is alredy in contacts`);
       return;
     }
-    const finalContacts = {
-      id: nanoid(),
-      name,
-      phone,
-    };
-    dispatch(addContact(finalContacts));
-    setName('');
-    setPhone('');
-  };
-  
 
-  const handleSubmit = event => {
-    event.preventDefault();
+    dispatch(apiPostContact(value))
+      .unwrap()
+      .then(data =>
+        NotificationManager.success(`${data.name} was successfully added`)
+      );
 
-    handleFormContact(name, phone);
-
-    setName('');
-    setPhone('');
-  };
-
-  const handleInputChange = event => {
-    const value = event.target.value;
-    const name = event.target.name;
-
-    switch (name) {
-      case 'name': {
-        setName(value);
-        break;
-      }
-      case 'phone': {
-        setPhone(value);
-        break;
-      }
-      default:
-        return;
-    }
+    action.resetForm();
   };
 
   return (
-    <div className={css.formContainer}>
-      <Title>Contact Form</Title>
-      <form onSubmit={handleSubmit} className={css.form}>
-        <label className={css.formLabel}>
-          <p className={css.formLabelText}>Name: </p>
-          <input
-            type="text"
-            className={css.formInput}
-            name="name"
-            value={name}
-            onChange={handleInputChange}
-            placeholder="Name, Surname"
-            required
-          ></input>
-        </label>
-        <label className={css.formLabel}>
-          <p className={css.formLabelText}>Number: </p>
-          <input
-            type="tel"
-            className={css.formInput}
-            name="phone"
-            value={phone}
-            onChange={handleInputChange}
-            placeholder="Phone Number"
-            pattern="^\+?\d{1,4}[ .\-]?\(?\d{1,3}\)?[ .\-]?\d{1,4}[ .\-]?\d{1,4}[ .\-]?\d{1,9}$"
-            required
-          ></input>
-        </label>
-        <button type="submit" className={css.formButton}>
-          Add contact
-        </button>
-      </form>
-    </div>
+    <Formik
+      initialValues={{
+        name: '',
+        number: '',
+      }}
+      onSubmit={handleSubmit}
+      validationSchema={Yup.object().shape({
+        name: Yup.string()
+          .required('Name is required')
+          .min(3, 'Name is too short - should be 3 chars minimum'),
+        number: Yup.string()
+          .required('Number is required')
+          .min(1, 'Number is too short - should be 1 chars minimum'),
+      })}
+    >
+      {formik => {
+        const {
+          values,
+          handleChange,
+          handleSubmit,
+          handleBlur,
+          isValid,
+          dirty,
+        } = formik;
+        return (
+          <form ref={inputForm} className={css.form} onSubmit={handleSubmit}>
+            <label className={css.form_label}>
+              <span className={css.text}>Name</span>
+              <input
+                className={css.form_input}
+                id="name"
+                type="text"
+                name="name"
+                placeholder="name"
+                autoComplete="off"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                title="Name should be 3 chars minimum"
+              />
+            </label>
+            <label className={css.form_label}>
+              <span className={css.text}>Phone</span>
+              <input
+                className={css.form_input}
+                id="number"
+                type="tel"
+                name="number"
+                placeholder="number"
+                autoComplete="off"
+                value={values.number}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                title="Number may contain only numbers and dushes. For example 050-111-2233"
+              />
+            </label>
+
+            <Button type="submit" isDisabled={!(dirty && isValid)}>
+              Add contact
+            </Button>
+          </form>
+        );
+      }}
+    </Formik>
   );
 };
-
-export default ContactForm;
