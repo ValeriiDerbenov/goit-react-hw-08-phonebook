@@ -1,7 +1,8 @@
 import css from 'components/ContactItem/ContactItem.module.css';
 
 export const ContactItem = ({
-  contact: { name, number, avatar = 'https://i.ibb.co/2ShmK52/nobody.png' },
+  contact: 
+  { name, number, avatar = 'https://i.ibb.co/2ShmK52/nobody.png' },
   onClickDelBtn,
 }) => {
   return (

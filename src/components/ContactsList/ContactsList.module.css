@@ -11,6 +11,7 @@
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar {
@@ -23,7 +24,7 @@
 ::-webkit-scrollbar-thumb {
   background: #c0bebe;
   outline: 1px solid #eee;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #9b9999;
